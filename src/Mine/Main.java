@@ -45,7 +45,7 @@ public class Main {
         MaternityLicense maternityLicense = new MaternityLicense();
         TemporaryLicense temporaryLicense = new TemporaryLicense();
         PaternityLicense paternityLicense = new PaternityLicense();
-        Disabilities disability = new Disabilities();
+        Disabilities disabilities = new Disabilities();
         Vacations vacations = new Vacations();
         Permissions permissions = new Permissions();
         
@@ -104,20 +104,60 @@ public class Main {
                                         id = JOptionPane.showInputDialog("Ingrese el numero de cedula de " + name + ": "); 
                                         employeeFound = false;
 
-
+                                        //for each to search for the employee
                                         for(Employee employee: employees){
                                             if(employee.getName().equals(name) && employee.getId().equals(id)){
                                                 employeeFound = true;
                                                 employee.showPersonalInformation();
-                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de licencia temporal (maximo 04 dias )?"));
-                                                licenseIsValid = temporaryLicense.registerDays(days,employee);
-                                                if(licenseIsValid){
-                                                    JOptionPane.showMessageDialog(null, "La solicitud de licencia ha tenido exito\ntienes una licencia temporal activa de " + days + " dias");
+                                                int choice = Integer.parseInt(JOptionPane.showInputDialog("1. Solicitar licencia\n2. Prorrogar Licencia"));
+                                                switch(choice){
+                                                    case 1:
+                                                        if(employee.getDaysTaken()==0){
+                                                            days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de licencia temporal (maximo 04 dias )?"));
+                                                            licenseIsValid = temporaryLicense.registerDays(days,employee);
+                                                            if(licenseIsValid){
+                                                                JOptionPane.showMessageDialog(null, "La solicitud de licencia ha tenido exito\ntienes una licencia temporal activa de " + days + " dias");
+                                                            }
+                                                            else{
+                                                                JOptionPane.showMessageDialog(null, "Error! El limite licencia temporal son 4 dias maximo \nDebes solicitar vacaciones");
+                                                            }
+                                                            break;
+                                                        }
+                                                        else{
+                                                            if(employee.getDaysTaken() != 4){
+                                                                JOptionPane.showMessageDialog(null, "Error! Ya has solicitado la licencia temporal, actualmente has tomado " + employee.getDaysTaken() + " dias de 04, si deseas tomar una parte o la totalidad de " + (4-employee.getDaysTaken()) + " dias que quedan disponibles, debes prorrogar la licencia temporal");
+                                                                break;
+                                                            }
+                                                            else{
+                                                                JOptionPane.showMessageDialog(null, "Error! Ya has tomado " + employee.getDaysTaken() + "  dias, la licencia temporal es de maximo 04 dias, debes solicitar vacaciones");
+                                                                break;
+                                                            }
+                                                        }
+                                                    case 2:
+                                                        if(employee.getDaysTaken()!=4 && employee.getDaysTaken()>0){
+                                                            days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea prorrogar la licencia temporal (maximo  " + (4-employee.getDaysTaken()) + " dias )?"));
+                                                            licenseIsValid = temporaryLicense.extend(days,employee);
+                                                            if(licenseIsValid){
+                                                                JOptionPane.showMessageDialog(null, "La solicitud de licencia ha tenido exito\ntienes una licencia temporal activa de " + days + " dias");
+                                                            }
+                                                            else{
+                                                                JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDaysTaken() + " dias de licencia temporal\nDebes solicitar vacaciones");
+                                                            }
+                                                            break;
+                                                        }
+                                                        else if(employee.getDaysTaken()==0){
+                                                            JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar la licencia temporal, ya que nunca has activado una, debes solicitar la licencia temporal.");
+                                                            break;
+                                                        }
+                                                        else{
+                                                            JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar mas la licencia temporal, Debes solicitar vacaciones");
+                                                            break;
+                                                        }
+                                                    default: 
+                                                        JOptionPane.showMessageDialog(null, choice +" No es una opcion valida");
                                                 }
-                                                else{
-                                                    JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDaysTaken() + " dias de licencia temporal\nDebes solicitar vacaciones");
-                                                }
-                                                break;
+                                                
+                                                
                                             }
                                         }
                                         if(!employeeFound){
@@ -130,7 +170,7 @@ public class Main {
                                         //Entering employee name and ID
                                         name = JOptionPane.showInputDialog("Ingreso de una licencia de maternidad\nIngrese el nombre del empleado: ");
                                         name = name.substring(0,1).toUpperCase() + name.substring(1).toLowerCase();
-                                        id = JOptionPane.showInputDialog("nIngrese el numero de cedula de " + name + ": "); 
+                                        id = JOptionPane.showInputDialog("Ingrese el numero de cedula de " + name + ": "); 
                                         employeeFound = false;
 
                                         for(Employee employee: employees){
@@ -140,17 +180,57 @@ public class Main {
                                                 
                                                 if(genderIsValid){
                                                     employee.showPersonalInformation();
-                                                    days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de la licencia de maternidad (maximo 180 dias )?"));
-                                                    licenseIsValid = maternityLicense.registerDays(days,employee);
+                                                    int choice = Integer.parseInt(JOptionPane.showInputDialog("1. Solicitar licencia\n2. Prorrogar Licencia"));
+                                                    switch(choice){
+                                                        case 1:
+                                                            if(employee.getDaysTakenMaternity() == 0){
+                                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de la licencia de maternidad (maximo 180 dias )?"));
+                                                                licenseIsValid = maternityLicense.registerDays(days,employee);
+
+                                                                if(licenseIsValid){
+                                                                    JOptionPane.showMessageDialog(null, "La solicitud de licencia de maternidad ha tenido exito\ntienes una licencia de maternidad activa activa por " + days + " dias.");
+                                                                    break;
+                                                                }
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Error! El limite de la licencia de maternidad son 180 dias maximo");
+                                                                    break;
+                                                                }
+                                                            }
+                                                            else{
+                                                                if(employee.getDaysTakenMaternity() != 180){
+                                                                    JOptionPane.showMessageDialog(null, "Error! Ya has solicitado la licencia de maternidad, actualmente has tomado " + employee.getDaysTakenMaternity() + " dias de 180, si deseas tomar una parte o la totalidad de " + (180-employee.getDaysTakenMaternity()) + " dias que quedan disponibles, debes prorrogar la licencia de maternidad");
+                                                                    break;
+                                                                }
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Error! Ya has tomado " + employee.getDaysTakenMaternity() + "  dias, la licencia de maternidad es de maximo 180 dias");
+                                                                    break;
+                                                                }
+                                                            }
+                                                        case 2:
+                                                            if(employee.getDaysTakenMaternity() != 180 && employee.getDaysTakenMaternity()> 0){
+                                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea prorrogar la licencia de maternidad (maximo  " + (180-employee.getDaysTakenMaternity()) + " dias )?"));
+                                                                licenseIsValid = maternityLicense.extend(days,employee);
+                                                                if(licenseIsValid){
+                                                                    JOptionPane.showMessageDialog(null, "La prorroga de licencia ha tenido exito\ntienes una licencia de maternidad activa de " + days + " dias");
+                                                                }
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDaysTakenMaternity() + " dias de licencia de maternidad.");
+                                                                }
+                                                                break;
+                                                            }
+                                                            else if(employee.getDaysTakenMaternity()==0){
+                                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar la licencia de maternidad, ya que nunca has activado una, debes solicitarla.");
+                                                                break;
+                                                            }
+                                                            else{
+                                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar mas la licencia de maternidad.");
+                                                                break;
+                                                            }
+                                                    default: 
+                                                        JOptionPane.showMessageDialog(null, choice +" No es una opcion valida");
+                                                        break;
+                                                    }
                                                     
-                                                    if(licenseIsValid){
-                                                        JOptionPane.showMessageDialog(null, "La solicitud de licencia de paternidad ha tenido exito\ntienes una licencia de maternidad activa activa por " + days + " dias\nSi desea mas dias vuelva a ingresar la solicitud para hacer una prorroga de la licencia");
-                                                        break;
-                                                    }
-                                                    else{
-                                                        JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido licencia de maternidad dias de licencia de maternidad");
-                                                        break;
-                                                    }
                                                 }
                                                 else{
                                                     JOptionPane.showMessageDialog(null,"Error! Genero del empleado incorrecto\npara solicitar licencia de maternidad debe ser genero femenino");
@@ -177,14 +257,54 @@ public class Main {
                                                 
                                                 if(genderIsValid){
                                                     employee.showPersonalInformation();
-                                                    days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de la licencia de paternidad (maximo 15 dias )?"));
-                                                    licenseIsValid = paternityLicense.registerDays(days,employee);
-                                                    if(licenseIsValid){
-                                                        JOptionPane.showMessageDialog(null, "La solicitud de licencia  ha tenido exito\ntienes una licencia de paternidad activa por " + days + " dias\nSi desea mas dias vuelva a ingresar la solicitud para hacer una prorroga de la licencia");
-                                                        break;
-                                                    }
-                                                    else{
-                                                        JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDaysTakenPaternity() + " dias de licencia de paternidad, solo puedes tener 15 dias maximo");
+                                                    int choice = Integer.parseInt(JOptionPane.showInputDialog("1. Solicitar licencia\n2. Prorrogar Licencia"));
+                                                    switch(choice){
+                                                        case 1:
+                                                            if(employee.getDaysTakenPaternity() == 0){
+                                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de la licencia de paternidad (maximo 15 dias )?"));
+                                                                licenseIsValid = paternityLicense.registerDays(days,employee);
+
+                                                                if(licenseIsValid){
+                                                                    JOptionPane.showMessageDialog(null, "La solicitud de licencia de paternidad ha tenido exito\ntienes una licencia de paternidad activa por " + days + " dias.");
+                                                                    break;
+                                                                }
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Error! El limite de la licencia de paternidad son 15 dias maximo");
+                                                                    break;
+                                                                }
+                                                            }
+                                                            else{
+                                                                if(employee.getDaysTakenPaternity() != 15){
+                                                                    JOptionPane.showMessageDialog(null, "Error! Ya has solicitado la licencia de paternidad, actualmente has tomado " + employee.getDaysTakenPaternity() + " dias de 15\n si deseas tomar una parte o la totalidad de " + (15-employee.getDaysTakenPaternity()) + " dias que quedan disponibles, debes prorrogar la licencia de paternidad");
+                                                                    break;
+                                                                }
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Error! Ya has tomado " + employee.getDaysTakenPaternity() + "  dias, la licencia de paternidad es de maximo 15 dias");
+                                                                    break;
+                                                                }
+                                                            }
+                                                        case 2:
+                                                            if(employee.getDaysTakenPaternity() != 15 && employee.getDaysTakenPaternity()> 0){
+                                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea prorrogar la licencia de paternidad (maximo  " + (15-employee.getDaysTakenPaternity()) + " dias )?"));
+                                                                licenseIsValid = paternityLicense.extend(days,employee);
+                                                                if(licenseIsValid){
+                                                                    JOptionPane.showMessageDialog(null, "La prorroga de licencia ha tenido exito\ntienes una licencia de paternidad activa de " + days + " dias");
+                                                                }
+                                                                else{
+                                                                    JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDaysTakenPaternity() + " dias de licencia de paternidad.");
+                                                                }
+                                                                break;
+                                                            }
+                                                            else if(employee.getDaysTakenPaternity()==0){
+                                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar la licencia de paternidad, ya que nunca has activado una, debes solicitarla.");
+                                                                break;
+                                                            }
+                                                            else{
+                                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar mas la licencia de paternidad.");
+                                                                break;
+                                                            }
+                                                    default: 
+                                                        JOptionPane.showMessageDialog(null, choice +" No es una opcion valida");
                                                         break;
                                                     }
                                                     
@@ -195,6 +315,7 @@ public class Main {
                                                 }
                                             }
                                         }
+                                        
                                         if(!employeeFound){
                                             JOptionPane.showMessageDialog(null, "Error! El empleado no se encontro en la base de datos de la mina\nVerifique la informacion que esta ingresando o registre al empleado");
                                             break;
@@ -219,17 +340,55 @@ public class Main {
                                     employeeFound = true;
                                     
                                     employee.showPersonalInformation();
-                                    days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de incapacidad (maximo 20 dias)?"));
-                                    licenseIsValid = disability.registerDays(days,employee);
-                                    if(licenseIsValid){
-                                        JOptionPane.showMessageDialog(null, "La solicitud de incapacidad  ha tenido exito\ntienes una incapacidad activa por " + days + " dias\nSi desea mas dias vuelva a ingresar la solicitud de incapacidad");
-                                        break;
+                                    int choice = Integer.parseInt(JOptionPane.showInputDialog("1. Solicitar incapacidad\n2. Prorrogar incapacidad"));
+                                    switch(choice){
+                                        case 1:
+                                            if(employee.getDisabilities()==0){
+                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de incapacidad (maximo 20 dias )?"));
+                                                licenseIsValid = disabilities.registerDays(days,employee);
+                                                if(licenseIsValid){
+                                                    JOptionPane.showMessageDialog(null, "La solicitud de incapacidad ha tenido exito\ntienes una incapacidad activa de " + days + " dias");
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! El limite de incapacidad son 20 dias maximo.");
+                                                }
+                                                break;
+                                            }
+                                            else{
+                                                if(employee.getDaysTaken() != 20){
+                                                    JOptionPane.showMessageDialog(null, "Error! Ya has solicitado la incapacidad, actualmente has tomado " + employee.getDisabilities() + " dias de 20,\n si deseas tomar una parte o la totalidad de " + (20-employee.getDisabilities()) + " dias que quedan disponibles, debes prorrogar la incapacidad");
+                                                    break;
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! Ya has tomado " + employee.getDisabilities() + "  dias, la incapacidad es de maximo 20 dias");
+                                                    break;
+                                                }
+                                            }
+                                        case 2:
+                                            if(employee.getDisabilities()!= 20 && employee.getDisabilities() > 0){
+                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea prorrogar la incapacidad (maximo  " + (20-employee.getDisabilities()) + " dias )?"));
+                                                licenseIsValid = disabilities.extend(days,employee);
+                                                if(licenseIsValid){
+                                                    JOptionPane.showMessageDialog(null, "La solicitud de prorrogar incapacidad ha tenido exito\ntienes una incapacidad activa de " + days + " dias");
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDisabilities() + " dias de incapacidad");
+                                                }
+                                                break;
+                                            }
+                                            else if(employee.getDisabilities()==0){
+                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar la incapacidad, ya que nunca has activado una, debes solicitar una incapacidad.");
+                                                break;
+                                            }
+                                            else{
+                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar mas la incapacidad.");
+                                                break;
+                                            }
+                                        default: 
+                                            JOptionPane.showMessageDialog(null, choice +" No es una opcion valida");
                                     }
-                                    else{
-                                        JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getDisabilities() + " dias, solo pedes tener 20 dias máximo de incapacidad");
-                                        break;
-                                    }
-                                    
+
+
                                 }
                             }
                             if(!employeeFound){
@@ -249,16 +408,56 @@ public class Main {
                                     employeeFound = true;
                                     
                                     employee.showPersonalInformation();
-                                    days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de vacaciones (maximo 15 dias )?"));
-                                    licenseIsValid = vacations.registerDays(days,employee);
-                                    if(licenseIsValid){
-                                        JOptionPane.showMessageDialog(null, "La solicitud de vacaciones  ha tenido exito\ntienes unas vacaciones activas por " + days + " dias\nSi desea mas dias vuelva a ingresar la solicitud de vacaciones");
-                                    }
-                                    else{
-                                        JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getVacations() + " dias de Vacaciones (Solo puedes tener máximo 15 dias)");
-                                    }
-                                    break;
                                     
+                                    int choice = Integer.parseInt(JOptionPane.showInputDialog("1. Solicitar vacaciones\n2. Prorrogar vacaciones"));
+                                    switch(choice){
+                                        case 1:
+                                            if(employee.getVacations()==0){
+                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea tomar de vacaciones (maximo 15 dias )?"));
+                                                licenseIsValid = vacations.registerDays(days,employee);
+                                                if(licenseIsValid){
+                                                    JOptionPane.showMessageDialog(null, "La solicitud de vacaciones ha tenido exito\ntienes unas vacaciones activas de " + days + " dias");
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! El limite de vacaciones son 15 dias maximo.");
+                                                }
+                                                break;
+                                            }
+                                            else{
+                                                if(employee.getVacations() != 15){
+                                                    JOptionPane.showMessageDialog(null, "Error! Ya has solicitado vacaciones, actualmente has tomado " + employee.getVacations() + " dias de 15,\n si deseas tomar una parte o la totalidad de " + (15-employee.getVacations()) + " dias que quedan disponibles, debes prorrogar las vacaciones");
+                                                    break;
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! Ya has tomado " + employee.getVacations() + "  dias, las vacaciones son de maximo 15 dias");
+                                                    break;
+                                                }
+                                            }
+                                        case 2:
+                                            if(employee.getVacations()!= 15 && employee.getVacations() > 0){
+                                                days = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos dias desea prorrogar las vacaciones (maximo  " + (15-employee.getVacations()) + " dias )?"));
+                                                licenseIsValid = vacations.extend(days,employee);
+                                                if(licenseIsValid){
+                                                    JOptionPane.showMessageDialog(null, "La solicitud de prorrogar vacaciones ha tenido exito\ntienes unas vacaciones activas de " + days + " dias");
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! No tienes " + days + " dias disponibles ya has pedido " + employee.getVacations() + " dias de vacaciones");
+                                                }
+                                                break;
+                                            }
+                                            else if(employee.getVacations() == 0 ){
+                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar las vacaciones, ya que nunca has activado una, debes solicitar vacaciones.");
+                                                break;
+                                            }
+                                            else{
+                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar mas las vacaciones.");
+                                                break;
+                                            }
+                                        default: 
+                                            JOptionPane.showMessageDialog(null, choice +" No es una opcion valida");
+                                    }
+
+
                                 }
                             }
                             if(!employeeFound){
@@ -275,18 +474,57 @@ public class Main {
                             for(Employee employee: employees){
                                 if(employee.getName().equals(name) && employee.getId().equals(id)){
                                     employeeFound = true;
-                                    
                                     employee.showPersonalInformation();
-                                    hours = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantas horas desea tomar de permiso (maximo 5 horas )?"));
-                                    licenseIsValid = permissions.registerDays(hours,employee);
-                                    if(licenseIsValid){
-                                        JOptionPane.showMessageDialog(null, "La solicitud de permiso  ha tenido exito\ntienes unas permiso activo por " + hours + " horas\nSi desea mas dias vuelva a ingresar la solicitud de vacaciones");
-                                        break;
+        
+                                    int choice = Integer.parseInt(JOptionPane.showInputDialog("1. Solicitar permiso\n2. Prorrogar permisos"));
+                                    switch(choice){
+                                        case 1:
+                                            if(employee.getPermissions()==0){
+                                                hours = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantas horas desea tomar de permiso (maximo 5 horas )?"));
+                                                licenseIsValid = permissions.registerDays(hours,employee);
+                                                if(licenseIsValid){
+                                                    JOptionPane.showMessageDialog(null, "La solicitud de permiso ha tenido exito\ntienes un permiso activo de " + hours + " horas");
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! El limite de permiso son 5 horas maximo.");
+                                                }
+                                                break;
+                                            }
+                                            else{
+                                                if(employee.getPermissions() != 5){
+                                                    JOptionPane.showMessageDialog(null, "Error! Ya has solicitado un permiso, actualmente has tomado " + employee.getPermissions() + " horas de 5,\n si deseas tomar una parte o la totalidad de " + (5-employee.getPermissions()) + " horas que quedan disponibles, debes prorrogar el permiso");
+                                                    break;
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! Ya has tomado " + employee.getPermissions() + "  horas, el permiso es de maximo 5 horas");
+                                                    break;
+                                                }
+                                            }
+                                        case 2:
+                                            if(employee.getPermissions()!= 5 && employee.getPermissions() > 0){
+                                                hours = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantas horas desea prorrogar el permiso (maximo  " + (5-employee.getPermissions()) + " horas )?"));
+                                                licenseIsValid = permissions.extend(hours,employee);
+                                                if(licenseIsValid){
+                                                    JOptionPane.showMessageDialog(null, "La solicitud de prorrogar permiso ha tenido exito\ntienes un permiso activo de " + hours + " horas");
+                                                }
+                                                else{
+                                                    JOptionPane.showMessageDialog(null, "Error! No tienes " + hours + " horas disponibles ya has pedido " + employee.getPermissions() + " horas de permiso, debes solicitar una licencia temporal");
+                                                }
+                                                break;
+                                            }
+                                            else if(employee.getPermissions() == 0 ){
+                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar un permiso, ya que nunca has activado uno, debes solicitar un permiso.");
+                                                break;
+                                            }
+                                            else{
+                                                JOptionPane.showMessageDialog(null, "Error! No puedes prorrogar mas el permiso, debes solicitar una licencia temporal.");
+                                                break;
+                                            }
+                                        default: 
+                                            JOptionPane.showMessageDialog(null, choice +" No es una opcion valida");
                                     }
-                                    else{
-                                        JOptionPane.showMessageDialog(null, "Error! No tienes " + hours + " horas disponibles ya has pedido " + employee.getPermissions() + " horas de permiso (Solo puedes tener máximo 5 horas)\nMejor solicita 1 dia de vacaciones o licencia temporal");
-                                        break;
-                                    }
+
+
                                 }
                             }
                             if(!employeeFound){

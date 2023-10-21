@@ -19,6 +19,7 @@ public class Employee {
             this.id = id;
             this.totalHoursWorked = totalHoursWorked;
             }
+    
     //Setters and Getters
     public String getName() {
         return name;
@@ -121,9 +122,9 @@ public class Employee {
         int endMonth = Integer.parseInt(endDate.substring(3,5));
         
         //Validate that only a maximum of 1 day difference is entered
-        boolean startDayIsValid = (startDay >= 28) && (startDay <= 31) || startDay == endDay || startDay+1 == endDay; //Dia Inicio valido?
-        boolean endDayIsValid = endDay == 01 || endDay == startDay || endDay-1 == startDay; //Dia fin valido?
-        boolean isValid = (startDay + 1 == endDay || startDay == endDay) || endDayIsValid && startDayIsValid;//Dia inicio y fin valido?
+        boolean startDayIsValid = (startDay >= 28) && (startDay <= 31) || startDay == endDay || startDay+1 == endDay; // Valid start day?
+        boolean endDayIsValid = endDay == 01 || endDay == startDay || endDay-1 == startDay; //valid end day?
+        boolean isValid = (startDay + 1 == endDay || startDay == endDay) || endDayIsValid && startDayIsValid;//Valid start and end day?
         if(!isValid){//Si no es valido
             if((startMonth+1 != endMonth && startMonth != endMonth) && (startMonth-11 != startMonth)){
                 JOptionPane.showMessageDialog(null, "Solo esta permitido ingresar fechas con diferencia de 1 dia\nejemplo: (Inicio: (28/02/2023) Fin: (01/03/2023)\nejemplo 2: Inicio: (31/12/2023) Fin: (01/01/2024)");
