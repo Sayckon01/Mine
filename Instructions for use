@@ -1,0 +1,70 @@
+English
+***Instructions for use***
+To enter work schedules or news, the employee's data will be requested:
+First the name of the employee will be requested, there you must enter only the first name without last name. Then the citizenship card will be requested, if the name and card number match the data of an employee in the mine database, access is allowed.
+If the name does not match the identification number registered in the mine database, access will not be allowed and the employee will be informed that it does not exist in the mine database and will be invited to register the details of the new employee in the mine database. or to verify the data. To save the new employee you must do it in the code. You can replace the data of a registered employee, otherwise you will have to expand the array where the database is being simulated and add the new employee to the next position.
+There are currently 3 employees in the mine database with the following information.
+
+Employee 1:
+Name: Carlos
+Last name: Perez
+gender: Male
+ID: 101010
+Hours worked: 1920
+
+Employee 2:
+Name: Sara
+Last name: Ossa
+gender: Fem
+ID: 101020
+Hours worked: 2000
+
+Employee 3:
+Name: Santiago
+Last name: Smith
+gender: Male
+ID: 101030
+Hours worked: 2120
+
+When entering work days, it is not allowed to enter dates more than 1 day apart, the entry and exit time must be in the 24-hour format, and must be entered in the following format HH:mm
+The arrival and departure dates must be entered in the dd/MM/YYYY format or can also be entered in the dd-MM-YYYY format (Both the date and time must not contain spaces).
+
+To extend a license you must access it as if you were going to request it. At a certain point, a menu will appear asking you if you want to request a license or extend it.
+
+Note: Only licenses that have been partially taken can be extended. If you have taken all the maximum days allowed for the license, you cannot extend it or request it again.
+
+-----------------------------------------------------------------------------------------------------------------------------------
+
+Español
+***Instrucciones de uso***
+Para ingresar horas o novedades, se pedirán los datos del empleado: 
+Primero se pedirá el Nombre del empleado, ahí deberás ingresar únicamente el Primer nombre. luego se pedirá la cedula de ciudadanía, si el nombre y el número de cedula coinciden con los de datos de algún empleado en la base de datos de la mina se permite el acceso.
+En caso de que el nombre no coincida con el numero de documento de identidad registrado en la base de datos de la mina, no se permitirá el acceso y se dirá que el empleado no existe en la base de datos de la mina y se invitara a que lo registres de forma manual en el código, puedes remplazar los datos de un empleado registrado, de lo contrario ya deberás extender el array donde se esta simulando la base de datos y agregar el nuevo empleado a la siguiente posición.
+En la base de datos de la mina actualmente existen 3 empleados con la siguiente información.
+
+Empleado 1:
+Nombre: Carlos
+Apellido: Perez
+Genero: Masculino
+Cedula: 101010
+Horas trabajadas: 1920
+
+Empleado 2:
+Nombre: Sara
+Apellido: Ossa
+Genero: Femenino
+Cedula: 101020
+Horas trabajadas: 2000
+
+Empleado 3:
+Nombre: Santiago
+Apellido: Smith
+Genero: Masculino
+Cedula: 101030
+Horas trabajadas: 2120
+
+En el ingreso de jornadas laborales, no se permite ingresar fechas con mas de 1 día de diferencia, la hora de ingreso y de salida debe ser en el formato de 24 horas, y se debe ingresar en el siguiente formado HH:mm
+Las fechas de ingreso y de salida deben ser ingresadas en el formato dd/MM/YYYY o también pueden ser ingresadas en el formato dd-MM-YYYY (Tanto la fecha como la hora no deben contener espacios).
+
+Para prorrogar una licencia debes acceder a ella como si fueras a solicitarla. En determinado momento aparecerá un menú preguntándote si deseas solicitar una licencia o prorrogarla.
+Nota: Solo se podrán prorrogar licencias que se hayan tomado parcial mente, si tomaste la totalidad de días máximos permitidos para la licencia no puedes prorrogarla, ni volverla a solicitar.
